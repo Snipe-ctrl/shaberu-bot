@@ -1,13 +1,16 @@
-require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const cors = require('cors');
 const { OpenAI } = require('openai');
-
+const conversationRoutes = require('./routes/conversation');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+
+
 app.use(cors());
 app.use(express.json());
+
+app.use('/api', conversationRoutes);
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -65,12 +68,6 @@ ${pairs.map((pair, i) => `Prompt ${i + 1}: ${pair.prompt}\nResponse: ${pair.resp
     }
 });
 
-app.post('/start-conversation', async (req, res) => {
-    try {
-        
-    }
-});
-
 app.post('/chat', async (req, res) => {
     try {
         const { prompt } = req.body;
@@ -91,6 +88,7 @@ app.get('/', (req, res) => {
     res.send('Hello from Express!');
 });
 
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`)
 });
