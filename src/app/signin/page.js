@@ -2,12 +2,14 @@
 
 import React, { useState } from 'react';
 import { supabase } from '../../utils/supabaseClient';
+import { useRouter } from 'next/navigation';
 
 export default function SignInPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +24,7 @@ export default function SignInPage() {
       setMessage(error.message);
     } else {
       setMessage('Signed in successfully!');
+      router.push('/');
     }
   };
 
